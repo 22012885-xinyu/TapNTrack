@@ -14,12 +14,6 @@
 	<div th:replace="fragments/rewards_style"></div>
 	<div class="container">
 		<div class="tnt">
-			<div class="points-container" sec:authorize="hasRole('ROLE_USER')">
-				<span>My Point(s): <span
-					th:text="${member != null ? member.points : '0'}"></span>
-				</span> <a href="/history"> <img class="icon" src="images/point.png" />
-				</a>
-			</div>
 			<div class="label-container">
 				<div class="label" style="border-bottom: 2px solid #06B48B;">
 					<a href="/rewards" class="link"> <img
@@ -29,7 +23,7 @@
 					</a>
 				</div>
 
-				<div class="label">
+				<div class="label" sec:authorize="hasRole('ROLE_USER')">
 					<a href="/redeem" class="link"> <img
 						style="margin-left: 15px; width: 60px; height: 40px;"
 						src="images/redeem.png">

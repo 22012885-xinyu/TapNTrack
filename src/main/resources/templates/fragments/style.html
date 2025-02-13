@@ -463,17 +463,6 @@ body {
 		<a href="/" target="_self"> <img class="icon"
 			th:src="@{/images/home.png}" /> <span class="text">Home</span>
 		</a>
-		<!-- Leaderboard -->
-		<!-- <a href="/leaderboard" target="_self"> <img class="icon"
-			th:src="@{/images/leaderboard.png}" /> <span class="text">Leaderboard</span>
-		</a> -->
-		<!-- Points History -->
-		<div sec:authorize="hasRole('ROLE_USER')">
-			<a href="/history" target="_self"> <img class="icon"
-				th:src="@{/images/history.png}" /> <span class="text">Points
-					History</span>
-			</a>
-		</div>
 		<!-- Rewards -->
 		<a href="/rewards" target="_self"> <img class="icon"
 			th:src="@{/images/gift.png}" /> <span class="text">Rewards</span>

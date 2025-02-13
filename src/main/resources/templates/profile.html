@@ -55,12 +55,12 @@
 					<p class="card-text">
 						Username: <span th:text="${member.username}"></span>
 					</p>
-					<p class="card-text">
+					<p class="card-text" sec:authorize="hasRole('ROLE_USER')">
 						Point(s): <span th:text="${member.points}"></span>
 						<img
 								src="/images/point.png" class="icon">
 					</p>
-					<a th:href="@{/profile/edit}" class="btn">Edit Profile</a>
+					<!-- <a th:href="@{/profile/edit}" class="btn">Edit Profile</a> -->
 				</div>
 			</div>
 		</div>

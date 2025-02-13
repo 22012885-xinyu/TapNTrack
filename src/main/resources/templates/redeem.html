@@ -14,15 +14,9 @@
 	<div th:replace="fragments/rewards_style"></div>
 	<div class="container">
 		<div class="tnt">
-			<div class="points-container">
-				<span>My Point(s): <span
-					th:text="${member != null ? member.points : '0'}"></span>
-				</span> <a href="/history"> <img class="icon" src="images/point.png" />
-				</a>
-			</div>
-			<p>
-				Total redeemed rewards: <span th:text="${redeemedRewards.size()}"></span>
-			</p>
+			<b> Total redeemed rewards: <span
+				th:text="${redeemedRewards.size()}"></span>
+			</b>
 			<div class="label-container">
 				<div class="label">
 					<a href="/rewards" class="link"> <img

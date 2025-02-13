@@ -14,17 +14,28 @@
 }
 
 .label {
-	width: auto;
-	height: auto;
-	padding: 20px 30px;
-	border: none;
-	border-radius: 20px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 0;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 180px;
+    
 }
 
+.content {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+}
+
+img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+}
 .reward {
 	background-color: #fbd3cc;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -73,5 +84,64 @@
 
 .btn-redeem:hover {
 	background-color: #E6E2D5;
+}
+
+/* Points Earned CSS */
+.other {
+	width: 100%;
+	height: auto;
+	border: none;
+/* 	margin: 30px 0; */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.earn {
+	background-color: #f4faf9;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	width: auto;
+	height:auto;
+	padding: 10px 30px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	position: relative;
+	flex-wrap: wrap;
+	border: 2px solid transparent; 
+}
+
+.earn:hover {
+	border-color: #37c3a2; 
+}
+.points {
+	display: flex;
+	justify-content: center;
+	position: sticky;
+ 	margin-top: 20px; 
+	height: 100px;
+}
+/* .details {
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	margin-top: 10px;
+}
+ */
+.history-img {
+	width: 40px;
+	height: 40px;
+	margin-left: 15px;
+}
+
+.description {
+	margin-left: 10px;
+	margin-top: -10px;
+	font-size: 15px;
 }
 </style>
