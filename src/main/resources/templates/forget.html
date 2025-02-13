@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forget Password</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="~{fragments/style}"></div>
+
+	<div class="container">
+		<div class="tnt">
+			<i>Forget Password<img src="/images/login.png" class="tnt-icon"></i>
+			<form th:action="@{/sendOtp}" method="post">
+				<label for="email" class="label-tnt">Enter Your Email</label> <input
+					type="email" class="input-tnt" id="email" name="email" required />
+
+				<!-- Success Message -->
+				<div th:if="${success}" class="alert alert-success mt-3">
+					[[${success}]]</div>
+
+				<!-- Error Message -->
+				<div th:if="${error}" class="alert alert-danger mt-3">
+					[[${error}]]</div>
+
+				<div class="text-center mt-4">
+					<button type="submit" class="btn">Request OTP</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

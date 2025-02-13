@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTP Verification</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="~{fragments/style}"></div>
+	<div class="container">
+		<div class="tnt">
+			<i>Enter OTP<img src="/images/login.png" class="tnt-icon"></i>
+			<form th:action="@{/verifyOtp}" method="post">
+				<label for="otpEntered" class="label-tnt">Enter OTP</label> <input type="text"
+					id="otpEntered" name="otpEntered" class="input-tnt" required /> <input type="hidden"
+					name="email" th:value="${email}" />
+				<!-- Pass email from model -->
+
+				<button type="submit" class="btn">Verify OTP</button>
+			</form>
+
+			<!-- Success/Error messages -->
+			<p th:if="${success}" th:text="${success}"></p>
+			<p th:if="${error}" th:text="${error}"></p>
+		</div>
+	</div>
+</body>
+</html>

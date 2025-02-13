@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Member</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+#thankyouMessage {
+	display: none;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #d4edda;
+	color: #155724;
+	padding: 20px;
+	border: 1px solid #c3e6cb;
+	border-radius: 5px;
+	transition: top 0.5s ease-in-out;
+}
+
+.alert-success {
+	margin-top: -100px;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<!-- Success Message and Return to Leaderboard button at the top -->
+		<div th:if="${uniqueLink}">
+			<div class="alert alert-success">
+				<p
+					th:text="'Member successfully added! Unique link: ' + ${uniqueLink}"></p>
+					<a href="/" class="btn-member">Return to Leaderboard</a>
+			</div>
+		</div>
+		<!-- <a href="/ " class="btn-member">Return to Leaderboard</a> -->
+
+		<!-- Add Member Form -->
+		<div class="tnt">
+			<i>Add member <img src="/images/member.png" class="tnt-icon"></i>
+			<div id="overflow">
+				<form id="addMember" th:action="@{/members/save}"
+					th:object="${member}" method="post" enctype="multipart/form-data"
+					novalidate>
+					<input type="hidden" id="memberId" th:value="${memberId}" />
+					<div>
+						<label for="select" class="label-tnt">Avatar</label> <select
+							id="select" class="input-tnt" th:field="*{avatar}" required>
+							<option value="">Select your avatar:</option>
+							<option th:each="avatar : ${avatarList}" th:value="${avatar.id}"
+								th:text="${avatar.name}"></option>
+							<option value="/avatar/cat.jpg">Cat</option>
+							<option value="/avatar/dog.jpg">Dog</option>
+							<option value="/avatar/duck.jpg">Duck</option>
+							<option value="/avatar/rat.jpg">Hamster</option>
+							<option value="/avatar/penguin.jpg">Penguin</option>
+							<option value="/avatar/rabbit.jpg">Rabbit</option>
+							
+						</select>
+						<p class="text-danger" th:if="${#fields.hasErrors('avatar')}"
+							th:errors="*{avatar}"></p>
+					</div>
+					<div class="display">
+						<p>Your Selected Avatar</p>
+						<img id="avatar" src="/avatar/white.png" class="avatar" />
+					</div>
+					<div>
+						<label for="member_role" class="label-tnt">Role</label> <select
+							id="member_role" class="input-tnt" th:field="*{role}" required>
+							<option value="">Select member's role</option>
+							<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+							<option value="ROLE_USER">ROLE_USER</option>
+						</select>
+					</div>
+					<div>
+						<label for="member_email" class="label-tnt">Email</label> <input
+							id="member_email" type="email" class="input-tnt"
+							th:field="*{email}" required />
+						<p class="text-danger" th:if="${#fields.hasErrors('email')}"
+							th:errors="*{email}"></p>
+					</div>
+					<div>
+						<label for="member_username" class="label-tnt">Username</label> <input
+							id="member_username" type="text" class="input-tnt"
+							th:field="*{username}" required />
+						<p class="text-danger" th:if="${#fields.hasErrors('username')}"
+							th:errors="*{username}"></p>
+					</div>
+					<div>
+						<label for="member_password" class="label-tnt">Password</label> <input
+							id="password" type="password" class="input-tnt"
+							th:field="*{password}" required />
+						<p class="text-danger" th:if="${#fields.hasErrors('password')}"
+							th:errors="*{password}"></p>
+					</div>
+					<div class="show-container">
+						<div class="show">
+							<input type="checkbox" onclick="myFunction()" class="show">
+							<span style="padding: 0 10px;"> Show Password </span>
+						</div>
+					</div>
+					<!-- Add Member Button -->
+					<div class="mt-3">
+						<button type="submit" class="btn" id="submitButton">Add
+							Member</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Success Notification -->
+	<div id="thankyouMessage"></div>
+<script>
+    // JavaScript for displaying avatar when selected from dropdown
+    const imageSelect = document.getElementById('select');
+    const displayAvatar = document.getElementById('avatar');
+
+    imageSelect.addEventListener('change', function () {
+        const selectedAvatar = imageSelect.value;
+
+        // If no avatar is selected, default to /avatar/white.png
+        displayAvatar.src = selectedAvatar || "/avatar/white.png";
+    });
+
+    // JavaScript to show/hide password
+    function myFunction() {
+        const x = document.getElementById("password");
+        x.type = x.type === "password" ? "text" : "password";
+    }
+
+    // JavaScript for password validation
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("password");
+        const submitButton = document.getElementById("submitButton");
+
+        passwordInput.addEventListener("input", function () {
+            validatePassword();
+        });
+
+        function validatePassword() {
+            const password = passwordInput.value;
+            const passwordError = document.querySelector("#password + .text-danger");
+            
+            // Regular expression to check password strength
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+            if (!passwordRegex.test(password)) {
+                if (!passwordError) {
+                    const errorElement = document.createElement("p");
+                    errorElement.classList.add("text-danger");
+                    errorElement.textContent =
+                        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+                    passwordInput.insertAdjacentElement("afterend", errorElement);
+                }
+                submitButton.disabled = true;
+            } else {
+                if (passwordError) passwordError.remove();
+                submitButton.disabled = false;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
+
+

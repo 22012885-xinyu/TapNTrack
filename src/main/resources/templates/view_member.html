@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Members</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/member_style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i> Members <img src="/images/member.png" class="tnt-icon"></i>
+			<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+			<!-- Add Member Button -->
+			<div class="text-center">
+				<a href="/members/add" class="btn-add">Add Member</a>
+			</div>
+			<!-- Search Member -->
+			<input type="text" class="search" placeholder="Search Member by Username" id="filterInput">
+			<!-- No members found message -->
+			<div id="noMembersFound" style="display: none; text-align: center;">
+				<p>No member found!</p>
+			</div>
+
+			<!-- Member Entries -->
+			<div id="overflow">
+				<div id="membersList">
+					<div th:each="member : ${listMembers}" class="member-item" style="text-decoration: none;">
+						<div class="other">
+							<div class="details">
+								<a th:href="@{/members/{id}(id=${member.id})}" class="ribbon">
+									<span>View Me!</span>
+								</a> <img th:src="${member.avatar}" alt="Avatar" class="pfp" />
+								<div>
+									<div class="username">
+										<p>
+											Role: <span th:text="${member.role}"></span>
+										</p>
+										<p>
+											Email: <span th:text="${member.email}"></span>
+										</p>
+										<p>
+											Username: <span th:text="${member.username}"></span>
+										</p>
+										<p>
+											Points: <span th:text="${member.points}"></span> <img
+												src="/images/point.png" class="icon">
+										</p>
+										<div>
+											<a th:href="@{/members/edit/{id}(id=${member.id})}" class="link">Edit</a> |
+											<a th:href="@{/members/delete/{id}(id=${member.id})}"
+												class="link">Delete</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Search button JavaScript -->
+	<script>
+		document.getElementById('filterInput').addEventListener('keyup', function () {
+			const filter = this.value.toLowerCase(); // Get the search input
+			const members = document.querySelectorAll('.member-item'); // Select all members
+			let noMatch = true;
+
+			members.forEach(member => {
+				const username = member.querySelector('.username').textContent.toLowerCase();
+				member.style.display = username.includes(filter) ? '' : 'none';
+				if (username.includes(filter)) noMatch = false;
+			});
+
+			document.getElementById('noMembersFound').style.display = noMatch ? 'block' : 'none';
+		});
+	</script>
+
+</body>
+
+</html>

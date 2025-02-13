@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Edit Reward</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i>Edit Reward <img src="/images/gift.png" class="tnt-icon"></i>
+			<form
+				th:action="@{/rewards/edit/{rewardsId}(rewardsId=${rewards.rewardsId})}"
+				th:object="${rewards}" method="post" enctype="multipart/form-data">
+				<div>
+					<label for="rewardsImage" class="label-tnt">Rewards
+						Image: </label> <input type="file" name="rewardsImage"
+						class="input-tnt"
+						accept="images/png, images/jpg, images/jpeg" />
+				</div>
+				<div>
+					<label for="description" class="label-tnt">Description:
+					</label> <input id="description" type="text" class="input-tnt"
+						th:field="*{description}" required minlength="10" maxlength="150" />
+					<div class="invalid-feedback">Please enter a valid
+						description</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('description')}"
+						th:errors="*{description}"></p>
+				</div>
+
+				<div>
+					<label for="pointsRequired" class="label-tnt">Points
+						Required: </label> <input id="pointsRequired" type="number"
+						class="input-tnt" th:field="*{pointsRequired}" />
+					<div class="invalid-feedback">Please enter a valid points
+						required</div>
+					<p class="text-danger"
+						th:if="${#fields.hasErrors('pointsRequired')}"
+						th:errors="*{pointsRequired}"></p>
+				</div>
+
+				<div>
+					<label for="quantity" class="label-tnt">Quantity: </label> <input
+						id="quantity" type="number" class="input-tnt"
+						th:field="*{quantity}" />
+					<div class="invalid-feedback">Please enter a valid quantity</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('quantity')}"
+						th:errors="*{quantity}"></p>
+				</div>
+
+				<div>
+					<label for="status" class="label-tnt">Status: </label> <select
+						id="status" class="input-tnt" th:field="*{status}" required>
+						<option value="Available">Available</option>
+						<option value="Unavailable">Unavailable</option>
+						<option value="Out of Stock">Out of Stock</option>
+					</select>
+					<div class="invalid-feedback">Please select a status</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('status')}"
+						th:errors="*{status}"></p>
+				</div>
+
+
+				<div>
+					<button type="submit" class="btn">Update
+						Reward</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

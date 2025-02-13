@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>More</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/more_style"></div>
+
+	<!-- Main content -->
+	<div class="container">
+		<div class="more">
+			<div sec:authorize="isAuthenticated()">
+				<a th:href="@{/profile}" target="_self" class="background"> <img
+					class="img" src="images/profile.png" /> <span class="text">Profile</span>
+				</a>
+			</div>
+			<!-- User Guide Link -->
+			<div>
+				<a href="/TapNTrack User Manual.pdf" target="_blank" class="background"> <img
+					class="img" src="images/guide.png" /> <span class="text">User
+						Manual</span>
+				</a>
+			</div>
+			<!-- NFC Guide Link -->
+			<div>
+				<a href="/NFC GUIDE.pdf" target="_blank" class="background"> <img
+					class="img" src="images/nfc.png" /> <span class="text">NFC
+						Guide</span>
+				</a>
+			</div>
+			<!-- Feedback Form Link -->
+			<div>
+				<a href="https://forms.gle/tJ3aNRu56ZBdpijv7" target="_blank"
+					class="background"> <img class="img" src="images/feedback.png" />
+					<span class="text">Feedback</span>
+				</a>
+			</div>
+			<!-- Delete Account Button -->
+			<div>
+				<button class="background" onclick="confirmDelete()">
+					<img class="img" src="/images/delete.png" alt="Delete Account" />
+					<span class="text">Delete Account</span>
+				</button>
+			</div>
+
+			<div>
+				<!-- Log In Button (if user is not authenticated) -->
+				<a sec:authorize="!isAuthenticated()" href="/login"
+					class="background"> <img class="img" src="/images/login.png"
+					alt="Log In" /> <span class="text">Log In</span>
+				</a>
+
+				<!-- Log Out Button (if user is authenticated) -->
+				<form sec:authorize="isAuthenticated()" th:action="@{/logout}"
+					method="post">
+					<button type="submit" class="background">
+						<img class="img" src="/images/logout.png" alt="Log Out" /> <span
+							class="text">Log Out</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- JavaScript -->
+	<script
+		src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+	<script>
+    document.getElementById("data").addEventListener("click", async () => {
+        console.log("Download Data button clicked!");
+        try {
+            const activitiesResponse = await fetch('/api/activities');
+            const membersResponse = await fetch('/api/members');
+            const rewardsResponse = await fetch('/api/rewards');
+
+            if (!activitiesResponse.ok || !membersResponse.ok || !rewardsResponse.ok) {
+                throw new Error('Failed to fetch data from one or more endpoints');
+            }
+
+            const activities = await activitiesResponse.json();
+            const members = await membersResponse.json();
+            const rewards = await rewardsResponse.json();
+
+            const activitiesSheet = XLSX.utils.json_to_sheet(activities);
+            const membersSheet = XLSX.utils.json_to_sheet(members);
+            const rewardsSheet = XLSX.utils.json_to_sheet(rewards);
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, activitiesSheet, "Activities");
+            XLSX.utils.book_append_sheet(workbook, membersSheet, "Members");
+            XLSX.utils.book_append_sheet(workbook, rewardsSheet, "Rewards");
+
+            XLSX.writeFile(workbook, "Tap'N'Track.xlsx");
+            console.log("Download successful!");
+        } catch (error) {
+            alert("Failed to download data. Check the console for more details.");
+            console.error("Error downloading Excel:", error);
+        }
+    });
+
+
+		  function confirmDelete() {
+		    if (confirm("Are you sure you want to delete your account?")) {
+		      // Redirect or trigger delete account logic
+		      window.location.href = '/delete-account';
+		    }
+		  }
+	</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add Actvities</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<style>
+		/* Styles for the popup */
+		.popup {
+			display: none;
+			position: fixed;
+			background-color: #e0f7ea;
+			border: 1px solid #4caf50;
+			padding: 20px;
+			border-radius: 5px;
+			text-align: center;
+			z-index: 1000;
+		}
+
+		.popup.active {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i> Add Activity <img src="/images/point.png" class="tnt-icon"></i>
+			<form id="addActivityForm" class="needs-validation" th:action="@{/activities/save}"
+				th:object="${activities}" method="post" enctype="multipart/form-data" novalidate>
+				<div>
+					<label for="activitiesImages" class="label-tnt">Activity
+						image </label> <input type="file" class="input-tnt" id="activitiesImages"
+						name="activitiesImages" accept="images/png, images/jpeg" required />
+					<div class="invalid-feedback">Please enter a valid Image.</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('imagesName')}" th:errors="*{imagesName}"></p>
+				</div>
+				<div>
+					<label class="label-tnt" for="diploma_select">Diploma</label> <select class="input-tnt"
+						id="diploma_select" th:field="*{diploma}" required>
+						<option value="">Select your diploma</option>
+						<option th:each="diploma : ${diplomaList}" th:value="${diploma.id}" th:text="${diploma.name}">
+						</option>
+						<option value="CIP">CIP</option>
+						<option value="DAAA">DAAA</option>
+						<option value="DCDF">DCDF</option>
+						<option value="DECM">DECM</option>
+						<option value="DFT">DFT</option>
+						<option value="DIT">DIT</option>
+					</select>
+					<div class="invalid-feedback">Please select your diploma!</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('diploma')}" th:errors="*{diploma}"></p>
+				</div>
+
+				<div>
+					<label for="activities_booth" class="label-tnt">Booth</label> <input id="activities_booth"
+						class="input-tnt" type="text" th:field="*{booth}" required minlength=3 maxlength=100>
+					<div class="invalid-feedback">Please enter a valid booth</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('booth')}" th:errors="*{booth}"></p>
+				</div>
+				<div>
+					<label for="activities_activity" class="label-tnt">Activity</label>
+					<input id="activities_activity" class="input-tnt" type="text" th:field="*{activity}" required
+						minlength=3 maxlength=50>
+					<div class="invalid-feedback">Please enter a valid activity</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('activity')}" th:errors="*{activity}"></p>
+				</div>
+
+				<div>
+					<label for="activities_description" class="label-tnt">Description</label>
+					<input id="activities_description" class="input-tnt" type="text" th:field="*{description}" required
+						minlength=3 maxlength=100>
+					<div class="invalid-feedback">Please enter a valid
+						description</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+				</div>
+
+				<div>
+					<label for="activities_pointsRewarded" class="label-tnt">Points</label>
+					<!--					<input id="activities_pointsRewarded" class="input-tnt"
+						type="number" step=1 th:field="*{pointsRewarded}" required min=10>-->
+					<select id="activities_pointsRewarded" class="input-tnt" th:field="*{pointsRewarded}" required>
+						<option value="0">Select points</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+						<option value="50">50</option>
+					</select>
+					<div class="invalid-feedback">Please enter a valid points.</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('pointsRewarded')}" th:errors="*{pointsRewarded}">
+					</p>
+				</div>
+				<div>
+					<input class="btn" type="submit" value="Add activity">
+				</div>
+			</form>
+			<div class="popup" id="popup">
+				<p>Activity added successfully!</p>
+				<p>Redirecting to the activities page in 5 seconds...</p>
+			</div>
+			<!-- Form Validation -->
+			<script>
+				'use strict'
+
+				var form = document.querySelector('.needs-validation')
+
+				form.addEventListener('submit', function (event) {
+					if (!form.checkValidity()) {
+						event.preventDefault()
+						event.stopPropagation()
+					}
+
+					form.classList.add('was-validated')
+				})
+			</script>
+			<!-- End Form Validation -->
+
+		</div>
+		<script>
+			const form = document.getElementById('addActivityForm');
+			const popup = document.getElementById('popup');
+
+			form.addEventListener('submit', function (event) {
+				event.preventDefault(); // Prevent default form submission
+
+				// Show the popup
+				popup.classList.add('active');
+
+				// Wait for 5 seconds, then submit the form and redirect
+				setTimeout(() => {
+					form.submit(); // Submit the form
+				}, 5000);
+			});
+		</script>
+	</div>
+</body>
+
+</html>

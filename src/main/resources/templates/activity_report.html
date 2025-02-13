@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity Report</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<script src="/bootstrap/js/bootstrap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div th:replace="fragments/style"></div>
+    <div class="container">
+        <div class="tnt">
+            <i> Activities Report <img src="/images/point.png" class="tnt-icon"></i>
+            <canvas id="participationChart"></canvas>
+        </div>
+    </div>
+    <script>
+    function fetchParticipationData() {
+        // Example member list
+        const memberList = [
+            { studentId: 1, activity: "Activity A", timestamp: "2025-01-22 10:00" },
+            { studentId: 2, activity: "Activity B", timestamp: "2025-01-22 10:00" },
+            { studentId: 3, activity: "Activity A", timestamp: "2025-01-22 11:00" },
+            { studentId: 4, activity: "Activity C", timestamp: "2025-01-22 11:00" },
+            { studentId: 5, activity: "Activity A", timestamp: "2025-01-22 12:00" },
+            { studentId: 6, activity: "Activity B", timestamp: "2025-01-22 12:00" }
+        ];
+
+        // Group data by activity and by hour
+        const groupedData = {};
+
+        memberList.forEach(member => {
+            const date = new Date(member.timestamp);
+            const hour = `${date.getHours()}:00`;
+            const formattedDate = date.toLocaleDateString(); // Format date
+            const timeLabel = `${formattedDate} ${hour}`;
+
+            if (!groupedData[member.activity]) {
+                groupedData[member.activity] = {};
+            }
+
+            if (!groupedData[member.activity][timeLabel]) {
+                groupedData[member.activity][timeLabel] = 0;
+            }
+
+            groupedData[member.activity][timeLabel]++;
+        });
+
+        // Prepare data for chart
+        const labels = [];
+        const datasets = [];
+
+        Object.keys(groupedData).forEach(activity => {
+            const activityData = groupedData[activity];
+            const times = Object.keys(activityData).sort(); // Sort times to maintain order
+            const participationCounts = times.map(time => activityData[time]);
+
+            // Add times (x-axis labels) if not already added
+            if (labels.length === 0) {
+                labels.push(...times);
+            }
+
+            datasets.push({
+                label: activity,
+                data: participationCounts,
+                borderColor: getRandomColor(),
+                fill: false
+            });
+        });
+
+        // Render the chart
+        const ctx = document.getElementById('participationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date and Time' } },
+                    y: { 
+                        title: { display: true, text: 'Number of Students' },
+                        ticks: {
+                            // Force y-axis to show only whole numbers
+                            callback: function(value) {
+                                return value % 1 === 0 ? value : '';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Function to generate random colors for each activity line
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    fetchParticipationData();
+    </script>
+</body>
+</html>

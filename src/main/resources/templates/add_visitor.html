@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Visitor</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+#thankyouMessage {
+	display: none;
+	position: fixed;
+	top: -100px;
+	/* Initially hidden above the viewport */
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #d4edda;
+	color: #155724;
+	padding: 20px;
+	border: 1px solid #c3e6cb;
+	border-radius: 5px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: top 0.5s ease-in-out;
+}
+
+#okButton {
+	margin-top: 10px;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i>Add Visitor <img src="/images/member.png" class="tnt-icon"></i>
+			<div id="overflow">
+				<form id="addMember" th:action="@{/members/visitor}"
+					th:object="${member}" method="post" enctype="multipart/form-data"
+					novalidate>
+					<input type="hidden" id="memberId" th:value="${memberId}" />
+					<div>
+						<label for="select" class="label-tnt">Avatar</label> <select
+							id="select" class="input-tnt" th:field="*{avatar}" required>
+							<option value="">Select your avatar:</option>
+							<option th:each="avatar : ${avatarList}" th:value="${avatar.id}"
+								th:text="${avatar.name}"></option>
+							<option value="/avatar/cat.jpg">Cat</option>
+							<option value="/avatar/dog.jpg">Dog</option>
+							<option value="/avatar/duck.jpg">Duck</option>
+							<option value="/avatar/penguin.jpg">Penguin</option>
+							<option value="/avatar/rabbit.jpg">Rabbit</option>
+							<option value="/avatar/rat.jpg">Rat</option>
+						</select>
+						<p class="text-danger" th:if="${#fields.hasErrors('avatar')}"
+							th:errors="*{avatar}"></p>
+					</div>
+					<div class="display">
+						<p>Your Selected Avatar:</p>
+						<img id="avatar" src="" class="avatar" />
+					</div>
+
+					<div>
+						<label for="member_email" class="label-tnt"> Email </label> <input
+							id="member_email" type="email" class="input-tnt"
+							th:field="*{email}" required />
+						<p class="text-danger" th:if="${#fields.hasErrors('email')}"
+							th:errors="*{email}"></p>
+					</div>
+					<div>
+						<label for="member_username" class="label-tnt"> Username </label>
+						<input id="member_username" type="text" class="input-tnt"
+							th:field="*{username}" required />
+						<p class="text-danger" th:if="${#fields.hasErrors('username')}"
+							th:errors="*{username}"></p>
+					</div>
+					<div class="mt-3">
+						<button type="submit" class="btn" id="submitButton">Add
+							Visitor</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Success Message -->
+	<div id="thankyouMessage"></div>
+	<script>
+	// JavaScript for displaying avatar when selected from dropdown
+	const imageSelect = document.getElementById('select');
+	const displayAvatar = document.getElementById('avatar');
+
+	imageSelect.addEventListener('change', function () {
+		const selectedAvatar = imageSelect.value;
+		if (selectedAvatar) {
+			displayAvatar.src = selectedAvatar;
+			displayAvatar.alt = `Selected avatar: ${this.options[this.selectedIndex].text}`;
+		}
+	});
+
+	// JavaScript to show/hide password
+	function myFunction() {
+		const x = document.getElementById("password");
+		x.type = x.type === "password" ? "text" : "password";
+	}
+
+	// Handle form submission
+	document.getElementById('addMember').addEventListener('submit', async function (event) {
+	    event.preventDefault(); // Prevent default form submission
+
+	    // Collect form data
+	    const formData = new FormData(this);
+
+	    try {
+	        // Send form data to the correct URL for adding a visitor
+	        const response = await fetch('/members/visitor', {
+	            method: 'POST',
+	            body: formData
+	        });
+
+	        // Log the response status and body for debugging
+	        console.log('Response status:', response.status);
+	        console.log('Response OK:', response.ok);
+	        const responseBody = await response.text();
+	        console.log('Response body:', responseBody);
+
+	        if (response.ok) {
+	            // Display success message and slide it down
+	            const thankyouMessage = document.getElementById('thankyouMessage');
+	            thankyouMessage.style.display = 'block';
+
+	            // Slide the notification down
+	            setTimeout(() => {
+	                thankyouMessage.style.top = '20px'; // Slide down
+	            }, 50);
+
+	            // Handle OK button click
+	            document.getElementById('okButton').addEventListener('click', function () {
+	                // Redirect to the leaderboard page after clicking OK
+	                window.location.href = '/'; // Adjust URL as needed
+	            });
+	        } else {
+	            alert('Failed to add visitor. Please try again.');
+	        }
+	    } catch (error) {
+	        console.error('Error adding visitor:', error);
+	        alert('An error occurred while adding the visitor. Please try again later.');
+	    }
+	});
+
+
+
+	</script>
+</body>
+</html>

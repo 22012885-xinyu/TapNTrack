@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaderboard</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/index_style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i> Leaderboard <img src="/images/leaderboard.png"
+				class="tnt-icon"></i>
+			<!-- Leaderboard Entries -->
+			<!-- Top 3 Ranks Section -->
+			<div id="overflow">
+				<div class="tnt-row">
+					<div th:each="member, iterStat : ${topMembers}"
+						th:if="${iterStat.index < 3}">
+						<div
+							th:class="${iterStat.index == 0 ? 'first' : (iterStat.index == 1 ? 'second' : 'third')}">
+							<!-- Display Trophy Icons for Top 3 -->
+							<img th:if="${iterStat.index == 0}" th:src="@{/images/first.png}"
+								class="rank"> <img th:if="${iterStat.index == 1}"
+								th:src="@{/images/second.png}" class="rank"> <img
+								th:if="${iterStat.index == 2}" th:src="@{/images/third.png}"
+								class="rank">
+							<div>
+								<!-- Avatar Image -->
+								<img th:src="${member.avatar}" alt="Avatar" class="pfp" />
+
+								<!-- Username & Points -->
+
+								<p th:text="${member.username}">Username</p>
+								<div class="score">
+									<span th:text="${member.points}">Points</span> <img
+										src="/images/point.png" class="icon">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div th:each="member, iterStat : ${topMembers}"
+						th:if="${iterStat.index >= 3  && iterStat.index < 5}">
+						<div class="other">
+							<span class="placing" th:text="${iterStat.index + 1}"></span> <img
+								th:src="${member.avatar}" alt="Avatar" class="pfp">
+							<div class="username">
+								<span th:text="${member.username}"></span>
+								<div>
+									<span th:text="${member.points}">Points</span> <img
+										src="/images/point.png" class="icon">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

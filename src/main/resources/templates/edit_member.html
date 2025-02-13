@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Member</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+/* display card for avatar */
+.display {
+	background-color: white;
+	width: 250px;
+	padding: 20px;
+	border-radius: 20px;
+	text-align: left;
+	font-size: 18px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 20px auto 0;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i>Edit Member <img src="/images/member.png" class="tnt-icon"></i>
+			<form class="needs-validation" novalidate
+				th:action="@{/members/edit/{id}(id=${member.id})}"
+				th:object="${member}" method="post" enctype="multipart/form-data">
+				<!--  
+				<div>
+					<label for="member_name" class="label-tnt">Name</label> <input
+						id="member_name" class="input-tnt" type="text"
+						th:field="*{name}" required minlength=5 maxlength=50>
+					<div class="invalid-feedback">Please enter a valid member
+						name</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('name')}"
+						th:errors="*{name}"></p>
+				</div>
+				-->
+				<div>
+					<label for="select" class="label-tnt">Avatar</label> <select
+						id="select" class="input-tnt" th:field="*{avatar}" required>
+						<option value="">Select your avatar:</option>
+						<option th:each="avatar : ${avatarList}" th:value="${avatar.id}"
+							th:text="${avatar.name}"></option>
+						<option value="/avatar/cat.jpg">Cat</option>
+						<option value="/avatar/dog.jpg">Dog</option>
+						<option value="/avatar/duck.jpg">Duck</option>
+						<option value="/avatar/rat.jpg">Hamster</option>
+						<option value="/avatar/penguin.jpg">Penguin</option>
+						<option value="/avatar/rabbit.jpg">Rabbit</option>
+					</select>
+					<p class="text-danger" th:if="${#fields.hasErrors('avatar')}"
+						th:errors="*{avatar}"></p>
+				</div>
+				<div class="display">
+					<p>Your Selected Avatar</p>
+					<img id="avatar" src="/avatar/white.png" class="avatar" />
+				</div>
+				<div>
+					<label for="member_role" class="label-tnt">Role </label> <select
+						id="member_role" class="input-tnt" th:field="*{role}" required>
+						<option th:value="${role}" th:text="${role}"></option>
+						<option th:value="ROLE_USER" th:text="ROLE_USER"></option>
+						<option th:value="ROLE_ADMIN" th:text="ROLE_ADMIN"></option>
+					</select>
+				</div>
+				<div>
+					<label for="member_email" class="label-tnt">Email</label> <input
+						id="member_email" class="input-tnt" type="text" required min=0
+						th:field="*{email}">
+					<div class="invalid-feedback">Please enter a valid email</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('email')}"
+						th:errors="*{email}"></p>
+				</div>
+				<div>
+					<label for="member_username" class="label-tnt">Username</label> <input
+						id="member_username" class="input-tnt" type="text"
+						th:field="*{username}" required minlength=5 maxlength=50>
+					<div class="invalid-feedback">Please enter a valid username</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('username')}"
+						th:errors="*{username}"></p>
+				</div>
+				<input class="btn" type="submit" value="Update Member Details">
+			</form>
+		</div>
+	</div>
+	<script>
+		//Function to show avatar image when user click on the selected from dropdown
+		const imageSelect = document.getElementById('select');
+		const displayAvatar = document.getElementById('avatar');
+
+		imageSelect.addEventListener('change', function() {
+			const selectedAvatar = imageSelect.value;
+
+			// If no avatar is selected, default to /avatar/white.png
+			displayAvatar.src = selectedAvatar || "/avatar/white.png";
+		});
+		//Function to show password 
+		function myFunction() {
+			var x = document.getElementById("password");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+	</script>
+</body>
+</html>

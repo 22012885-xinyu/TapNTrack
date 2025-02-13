@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add Reward</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+	<script>
+		function validateDuplicate() {
+			const description = document.getElementById('description').value;
+			const existingRewards = [[${existingRewards}]];
+			if (existingRewards.includes(description)) {
+				alert("This reward already exists.");
+				return false;
+			}
+			return true;
+		}
+	</script>
+
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i> Add Reward <img src="/images/gift.png" class="tnt-icon"></i>
+
+			<div th:if="${errorMessage}" class="alert alert-danger">
+				<span th:text="${errorMessage}"></span>
+			</div>
+
+			<form class="needs-validation" th:action="@{/rewards/save}" th:object="${rewards}" method="post"
+				enctype="multipart/form-data">
+				<div>
+					<label for="rewardsImage" class="label-tnt">Reward Image: </label>
+					<input type="file" class="input-tnt" id="rewardsImages" name="rewardsImage"
+						accept="image/png, image/jpeg" required />
+					<div class="invalid-feedback">Please enter a valid Image.</div>
+
+				</div>
+				<div>
+					<label for="description" class="label-tnt">Description</label> <input id="description"
+						class="input-tnt" type="text" th:field="*{description}" required minlength=10 maxlength=150>
+					<div class="invalid-feedback">Please enter a valid
+						description</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+				</div>
+				<div>
+					<label for="pointsRequired" class="label-tnt">Points
+						Required </label> <input id="pointsRequired" class="input-tnt" type="number"
+						th:field="*{pointsRequired}" required />
+					<div class="invalid-feedback">Please enter a valid points
+						required</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('pointsRequired')}" th:errors="*{pointsRequired}">
+					</p>
+				</div>
+
+				<div>
+					<label for="quantity" class="label-tnt">Quantity </label> <input id="quantity" type="number"
+						class="input-tnt" th:field="*{quantity}" required />
+					<div class="invalid-feedback">Please enter a valid quantity</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+				</div>
+
+				<div>
+					<label class="label-tnt" for="status">Status</label> <select class="input-tnt" id="status"
+						th:field="*{status}" required>
+						<option value="" disabled selected>Select your stock status</option>
+						<option value="Available">Available</option>
+						<option value="Unavailable">Unavailable</option>
+						<option value="Out of Stock">Out of Stock</option>
+					</select>
+					<div class="invalid-feedback">Please select a status!</div>
+					<p class="text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></p>
+				</div>
+				<div>
+					<button type="submit" class="btn">Add reward</button>
+				</div>
+			</form>
+
+			<!-- Form Validation -->
+			<script>
+				'use strict'
+
+				var form = document.querySelector('.needs-validation')
+
+				form.addEventListener('submit', function (event) {
+					if (!form.checkValidity()) {
+						event.preventDefault()
+						event.stopPropagation()
+					}
+
+					form.classList.add('was-validated')
+				})
+			</script>
+			<!-- End Form Validation -->
+
+		</div>
+		<script>
+			function myFunction() {
+				alert("Reward has been added sucessfully!");
+			}
+		</script>
+	</div>
+</body>
+
+</html>

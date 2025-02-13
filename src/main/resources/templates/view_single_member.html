@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Single Member</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/member_style"></div>
+	<div class="container">
+		<div class="tnt" style="background-color: transparent; border: none;">
+			<i>Member Details <img src="/images/profile.png"
+				class="tnt-icon"></i>
+				<div sec:authorize="hasRole('ROLE_ADMIN')"  class="text-center">
+					<a th:href="@{/pointsRewarded(memberId=${member.id})}" class="btn-add">Reward Activity Points</a>
+				</div>
+			<div class="tnt-row">
+				<div class="profile">
+					<p class="card-text">
+						<img th:src="${member.avatar}" alt="Avatar" class="card-img" />
+					</p>
+					<p class="card-text">
+						Email: <span th:text="${member.email}"></span>
+					</p>
+					<p class="card-text">
+						Username: <span th:text="${member.username}"></span>
+					</p>
+					<p class="card-text">
+						Point(s): <span th:text="${member.points}"></span> <img
+							src="/images/point.png" class="icon">
+					</p>
+					<a th:href="@{/profile/edit}" class="btn">Edit Profile</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

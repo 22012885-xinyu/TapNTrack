@@ -1,0 +1,79 @@
+<style>
+/*rank img CSS */
+.rank {
+	height: 50px;
+	width: 50px;
+	margin: 10px ;
+}
+/* avatar img CSS */
+.pfp {
+	width: 80px;
+	height: 80px;
+	border-radius: 8px;
+}
+
+/* 1st,2nd,3rd card*/
+.first, .second, .third {
+	width: auto;
+	height: auto;
+	padding: 20px;
+	border: none;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.first {
+	background-color: #D6BD68;
+}
+
+.second {
+	background-color: #BBC2CC;
+}
+
+.third {
+	background-color: #DAAA5E;
+}
+
+@media (min-width: 500px) {
+    .first, .second, .third {
+        flex-direction: column; 
+        justify-content: center;
+        align-items: center; 
+    }
+}
+
+
+/* 4th place onwards card*/
+.other {
+	background-color: #f9f9f9;
+	width: 80%;
+	max-width: 600px;
+	margin: 20px auto;
+	padding: 20px;
+	border: none;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.placing {
+	font-weight: bold;
+	margin-right: 20px;
+	width: 25px;
+}
+.username {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	text-align: right;
+	margin-left: auto;
+	margin-top:10px;
+}
+</style>

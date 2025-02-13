@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rewards</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<script src="/bootstrap/js/bootstrap.js"></script>
+</head> 
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/rewards_style"></div>
+
+	<div class="container">
+		<div class="rewards">
+		<!-- Add Reward Button -->
+			<div>
+				<span style="display: block; margin-top: 10px; text-align: center;">Points</span>
+				<a href="/history"> <img class="img" src="images/point.png" />
+				</a>
+			</div>
+			<div class="label-container">
+				<div class="label">
+					<a href="/rewards" class="link"> <img class="img"
+						src="images/gift.png">
+						<p>Rewards</p>
+					</a>
+				</div>
+				<div class="label">
+					<a href="/redeem" class="link"> <img
+						style="width: 80px; height: 60px;" src="images/redeem.png">
+						<p>Redeemed</p>
+					</a>
+				</div>
+			</div>
+			<!-- Add Reward Button -->
+			<div class="btn-container">
+				<a href="/rewards/add" class="btn-add">Add Reward</a>
+			</div> 
+
+			<!-- Filter Section -->
+			<div class="filter">
+				<select name="rewards" id="rewards" class="form-select"
+					onchange="filterRewards(this.value)">
+					<option value="">Filter By</option>
+					<option value="asc">Lowest to Highest</option>
+					<option value="desc">Highest to Lowest</option>
+				</select>
+			</div>
+			<div th:each="reward : ${listRewards}" class="box">
+				<div style="text-align: center;">
+					<div>
+						<a th:href="@{/rewards/view/{rewardsId}(rewardsId=${reward.rewardsId})}"> </a>
+
+						<span>Description:
+							<p th:text="${reward.description}"></p>
+						</span>
+					</div>
+					<img class="img"
+						th:src="@{'/uploads/rewards/' + ${reward.rewardsId} + '/' + ${reward.imgName}}" />
+					<div>
+						<span>Points Required:
+							<p th:text="${reward.pointsRequired + ' points'}"></p>
+						</span>
+					</div>
+					<div>
+						<span>Quantity:
+							<p th:text="${reward.quantity}"></p>
+						</span>
+					</div>
+					<div>
+						<span>Status:
+							<p th:text="${reward.status}"></p>
+						</span>
+					</div>
+					<div>
+						<a
+							th:href="@{/rewards/edit/{rewardsId}(rewardsId=${reward.rewardsId})}"
+							style="color: black; text-decoration: none;"
+							>Edit</a> |  <a
+							th:href="@{/rewards/delete/{rewardsId}(rewardsId=${reward.rewardsId})}"
+							style="color: black; text-decoration: none;">Delete</a>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Points History -->
+		<div class="history">
+			<a href="/history"> Points History <img src="/images/history.png"
+				style="width: 30px; height: 30px; margin-right: 10px;">
+			</a>
+		</div>
+	</div>
+
+
+	<!-- JavaScript -->
+	<script>
+		function filterRewards(order) {
+			const currentUrl = new URL(window.location.href);
+			currentUrl.searchParams.set('filter', order);
+			window.location.href = currentUrl.toString();
+		}
+	</script>
+</body>
+
+</html>

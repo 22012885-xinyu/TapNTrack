@@ -1,0 +1,573 @@
+<style>
+body {
+	font-family: Verdana;
+	font-size: 20px;
+	background-color: #E6E2D5;
+	text-decoration: none;
+	background-image: url('/images/mushroom.png'), url('/images/pac.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: right 5% top 7%, left bottom -1%;
+	background-size: 100px;
+	align-items: center;
+	justify-content: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 120px;
+}
+/* Back to top button */
+#myBtn {
+	display: none;
+	position: fixed;
+	bottom: 20px;
+	right: 30px;
+	z-index: 99;
+	font-size: 18px;
+	border: none;
+	color: white;
+	padding: 15px;
+	border-radius: 4px;
+}
+
+#myBtn:hover {
+	background-color: #555;
+}
+/*Menu Bar CSS*/
+/* overlay any content infront */
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	z-index: 1000;
+	display: none;
+}
+
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: #06B48B;
+	overflow-x: hidden;
+	padding-top: 70px;
+	z-index: 1001;
+}
+
+.sidebar a {
+	padding: 10px 10px 10px 30px;
+	text-decoration: none;
+	font-size: 20px;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+.sidebar a:hover {
+	background-color: #5184bf;
+}
+
+.openbtn {
+	background-color: transparent;
+	font-size: 30px;
+	padding: 10px 15px;
+	border: none;
+	position: fixed;
+	top: 20px;
+	right: 5%;
+	font-size: 30px;
+	z-index: 1002;
+}
+
+/* points icon CSS */
+.icon {
+	width: 30px;
+	height: 30px;
+	margin-left: 5px;
+}
+
+.text {
+	margin-left: 30px;
+}
+
+.header-container {
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	gap: 10px;
+	z-index: 1002;
+}
+
+/* Wrapper for logo and visitor */
+.fixed-container {
+	position: fixed;
+	top: 2%;
+	left: 8%;
+}
+
+.logo {
+	display: block;
+	width: 90px;
+	height: 90px;
+	margin-bottom: 20px;
+}
+
+@media ( max-width : 600px) {
+	.logo {
+		width: 70px;
+		height: 70px;
+		margin-bottom: 10px;
+	}
+}
+
+.visitor {
+	background-color: #5184bf;
+	color: white;
+	text-decoration: none;
+	padding: 10px;
+	border-radius: 10px;
+	text-align: center;
+	display: inline-block;
+}
+
+.visitor:hover {
+	background-color: #E6E2D5;
+	color: #5184bf;
+}
+
+/* Main Content Container*/
+/* to prevent content scroll over header */
+#overflow {
+	overflow: scroll;
+	overflow-x: hidden;
+	scrollbar-color: transparent transparent;
+	overflow-y: visible;
+}
+
+.tnt {
+	/* 	background-color: #ececeb; 
+	border: 2px solid #06B48B;*/
+	height: auto;
+	border-radius: 30px;
+	position: fixed;
+	top: 130px;
+	left: 15%;
+	right: 10%;
+	bottom: 3%;
+	padding: 15px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+}
+
+.tnt i {
+	text-align: center;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	font-size: 30px;
+	font-weight: bold;
+}
+/* header image */
+.tnt-icon {
+	width: 40px;
+	height: 40px;
+	margin-left: 20px;
+}
+/* Card CSS*/
+.tnt-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	z-index: 1;
+}
+
+.card {
+	background-color: #b3ddd3;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	max-width: 300px;
+	width: 100%;
+	padding: 20px;
+	border-radius: 20px;
+	text-align: left;
+	display: table;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 1;
+	text-decoration: none;
+	color: black;
+}
+
+.card:hover {
+	background-color: #f4faf9;
+}
+
+.card-img {
+	border-radius: 20px;
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	margin-bottom: 10px;
+}
+
+.card p {
+	font-size: 18px;
+	text-decoration: none;
+	color: black;
+}
+/* Profile CSS*/
+.profile {
+	background-color: #b4a597;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	max-width: 300px;
+	width: 100%;
+	padding: 20px;
+	border-radius: 20px;
+	text-align: left;
+	display: table;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 1;
+	text-decoration: none;
+	color: black;
+}
+
+.profile:hover {
+	background-color: #e1dbd5;
+}
+
+/* Button CSS */
+.btn {
+	background-color: #5184bf;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 10px;
+	float: right;
+	bottom: 10px;
+	margin-top: 20px;
+	font-size: 20px;
+	display: inline-flex;
+}
+
+.btn:hover {
+	background-color: #E6E2D5;
+	color: #5184bf;
+}
+
+.btn-add {
+	background-color: #5184bf;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	display: inline-flex;
+	margin: 10px auto;
+}
+
+.btn-add:hover {
+	background-color: #E6E2D5;
+}
+
+.btn-member {
+	background-color: #5184bf;
+	color: white;
+	padding: 10px 15px;
+	border: none;
+	border-radius: 10px;
+	top: 10px;
+	margin-top: 20px;
+	font-size: 20px;
+	text-decoration: none;
+	align-items: center;
+	justify-content: center;
+	display: inline-flex;
+}
+
+.btn-member:hover {
+	background-color: #E6E2D5;
+	color: #5184bf;
+}
+
+.point-add {
+	background-color: #69d2b9;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	display: inline-flex;
+	margin: 10px auto;
+}
+
+.point-add:hover {
+	background-color: #E6E2D5;
+}
+
+/* Form Labels */
+.label-tnt {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.input-tnt {
+	width: 100%;
+	max-width: 450px;
+	height: 40px;
+	padding: 0 10px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+/* Link CSS */
+.link {
+	text-decoration: none;
+	color: black
+}
+
+.link:hover {
+	color: black;
+}
+/* Forget Password CSS */
+.forget {
+	display: block;
+	color: black;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.forget:hover {
+	color: #4C2B20;
+}
+
+/* Edit | Delete */
+.end {
+	margin-top: 20px;
+	align-items: flex-end;
+}
+/* Show pwd CSS*/
+.show-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	margin-top: 20px;
+}
+
+.show {
+	display: inline;
+	justify-content: center;
+	align-items: center;
+}
+
+/*avatar image CSS */
+.avatar {
+	width: 150px;
+	height: 150px;
+}
+/* display card for avatar */
+.display {
+	background-color: white;
+	width: 250px;
+	padding: 20px;
+	border-radius: 20px;
+	text-align: left;
+	font-size: 18px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 20px auto 0;
+	border: none;
+}
+
+/* User have not log in CSS*/
+.msg {
+	text-align: center;
+	margin-top: 10px;
+	color: #6c757d;
+}
+
+.history {
+	background-color: #E6E2D5;
+	border: 2px solid #06B48B;
+	color: #6c757d;
+	border-radius: 20px;
+	padding: 10px;
+	margin-top: 10px;
+	width: auto;
+	height: auto;
+	display: inline-block;
+	flex-wrap: wrap;
+}
+
+.img {
+	width: 40px;
+	height: 40px;
+}
+
+/* Filter By CSS*/
+.filter {
+	display: flex;
+	justify-content: center;
+	margin: 15px;
+}
+
+.filter select {
+	padding: 5px;
+	padding-right: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	width: 230px;
+}
+</style>
+</head>
+<body>
+	<!-- Back to Top button -->
+	<button onclick="topFunction()" id="myBtn" title="Go to top">
+		<img src="images/top.png" alt="Top" style="width: 20px; height: 20px;">
+	</button>
+	<!-- Tap N Track logo -->
+	<div class="fixed-container">
+		<a href="/" style="text-decoration: none;"> <img class="logo"
+			th:src="@{/images/logo.png}" alt="Logo">
+		</a>
+	</div>
+	<!-- Sidebar -->
+	<div id="mySidebar" class="sidebar">
+		<!-- Home -->
+		<a href="/" target="_self"> <img class="icon"
+			th:src="@{/images/home.png}" /> <span class="text">Home</span>
+		</a>
+		<!-- Leaderboard -->
+		<!-- <a href="/leaderboard" target="_self"> <img class="icon"
+			th:src="@{/images/leaderboard.png}" /> <span class="text">Leaderboard</span>
+		</a> -->
+		<!-- Points History -->
+		<div sec:authorize="hasRole('ROLE_USER')">
+			<a href="/history" target="_self"> <img class="icon"
+				th:src="@{/images/history.png}" /> <span class="text">Points
+					History</span>
+			</a>
+		</div>
+		<!-- Rewards -->
+		<a href="/rewards" target="_self"> <img class="icon"
+			th:src="@{/images/gift.png}" /> <span class="text">Rewards</span>
+		</a>
+		<!-- Activities -->
+		<a href="/activities" target="_self"> <img class="icon"
+			th:src="@{/images/point.png}" /> <span class="text">Activities</span>
+		</a>
+		<!-- Members -->
+		<a sec:authorize="hasRole('ROLE_ADMIN')" href="/members"
+			target="_self"> <img class="icon" th:src="@{/images/member.png}" />
+			<span class="text">Members</span>
+		</a>
+		<!-- More -->
+		<a href="/more" target="_self"> <img class="icon"
+			th:src="@{/images/more.png}" /> <span class="text">More</span>
+		</a>
+		<!-- Profile -->
+		<a sec:authorize="isAuthenticated()" href="/profile" target="_self">
+			<img class="icon" th:src="@{/images/profile.png}" /> <span
+			class="text">Profile Details</span>
+		</a>
+
+		<div>
+			<!-- Log In - Displayed when the user is not authenticated -->
+			<a sec:authorize="!isAuthenticated()" href="/login" class="link">
+				<img class="icon" th:src="@{/images/login.png}" /> <span
+				class="text">Log In</span>
+			</a>
+
+			<!-- Log Out - Displayed when the user is authenticated -->
+			<a sec:authorize="isAuthenticated()" href="/logout" class="link"
+				onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+				<img class="icon" th:src="@{/images/logout.png}" /> <span
+				class="text">Log Out</span>
+			</a>
+			<form id="logoutForm" th:action="@{/logout}" method="post"
+				style="display: none;"></form>
+		</div>
+	</div>
+	<div id="overlay" class="overlay" onclick="closeNav()"></div>
+	<button id="sidebarToggle" class="openbtn" onclick="toggleNav()">☰</button>
+
+	<script>
+		// Sidebar Toggle Logic
+		function toggleNav() {
+			const sidebar = document.getElementById("mySidebar");
+			const overlay = document.getElementById("overlay");
+			const button = document.getElementById("sidebarToggle");
+
+			if (sidebar.style.width === "260px") {
+				closeNav();
+			} else {
+				sidebar.style.width = "260px";
+				overlay.style.display = "block";
+				button.style.right = "250px";
+			}
+		}
+
+		function closeNav() {
+			const sidebar = document.getElementById("mySidebar");
+			const overlay = document.getElementById("overlay");
+			const button = document.getElementById("sidebarToggle");
+
+			sidebar.style.width = "0";
+			overlay.style.display = "none"; // Hide the overlay
+			button.style.right = "5%";
+		}
+
+		// Scroll Back to Top Button Logic
+		const myButton = document.getElementById("myBtn");
+
+		// Show the button when scrolling down 20px
+		window.onscroll = function() {
+			scrollFunction();
+		};
+
+		function scrollFunction() {
+			if (document.body.scrollTop > 20
+					|| document.documentElement.scrollTop > 20) {
+				myButton.style.display = "block"; // Show the button
+			} else {
+				myButton.style.display = "none"; // Hide the button
+			}
+		}
+
+		// Smooth scroll to the top of the page when the button is clicked
+		function topFunction() {
+			window.scrollTo({
+				top : 0,
+				behavior : "smooth",
+			});
+		}
+		
+	</script>
+</body>
+

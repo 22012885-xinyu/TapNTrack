@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activities</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+.participated {
+	color: green;
+}
+
+.not-participated {
+	color: red;
+}
+</style>
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/rewards_style"></div>
+
+	<div class="container">
+		<div class="tnt">
+			<i> Activities <img src="/images/point.png" class="tnt-icon"></i>
+			<!-- Add Activity Button -->
+			<div sec:authorize="hasRole('ROLE_ADMIN')" class="text-center">
+				<a href="/activities/add" class="btn-add">Add Activities</a>
+			</div>
+
+			<!-- Filter Section -->
+			<div class="filter" sec:authorize="hasRole('ROLE_USER')">
+				<select name="activities" id="activities" class="form-select"
+					onchange="filterRewards(this.value)">
+					<option value="">Filter By</option>
+					<option value="Participated"
+						th:selected="${filter == 'Participated'}">Participated</option>
+					<option value="NotParticipated"
+						th:selected="${filter == 'NotParticipated'}">Not
+						Participated</option>
+				</select>
+			</div>
+
+
+			<!-- Display Activities -->
+			<div id="overflow">
+				<div class="tnt-row">
+					<div class="card" th:each="activities : ${listActivities}">
+						<img
+							th:src="@{'/uploads/activities/' + ${activities.id} + '/' + ${activities.imagesName}}"
+							class="card-img">
+
+						<div>
+							<p>
+								Diploma: <span th:text="${activities.diploma}"></span>
+							</p>
+							<p>
+								<span th:text="${activities.booth}"></span> Booth
+							</p>
+							<p>
+								<span th:text="${activities.activity}"></span> Activity
+							</p>
+							<p th:text="${activities.description}">
+							</h5>
+							<h5>
+								Points Rewarded:+<span th:text="${activities.pointsRewarded}"></span>
+								<img src="/images/point.png" style="width: 30px; height: 30px;">
+								</p>
+								<p sec:authorize="hasRole('ROLE_USER')">
+									<span
+										th:text="${activities.participated ? 'Participated' : 'Not Participated'}"
+										th:class="${activities.participated ? 'participated' : 'not-participated'}"></span>
+								</p>
+
+								<div class="end">
+									<a sec:authorize="hasRole('ROLE_ADMIN')"
+										th:href="@{/activities/edit/{id}(id=${activities.id})}"
+										class="link">Edit |</a> <a
+										sec:authorize="hasRole('ROLE_ADMIN')"
+										th:href="@{/activities/delete/{id}(id=${activities.id})}"
+										class="link">Delete</a>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- JavaScript -->
+			<script>
+				function filterRewards(status) {
+					const currentUrl = new URL(window.location.href);
+
+					// Set the 'filter' query parameter based on the selected value
+					currentUrl.searchParams.set('filter', status);
+
+					// Redirect to the updated URL to apply the filter
+					window.location.href = currentUrl.toString();
+				}
+			</script>
+</body>
+
+</html>

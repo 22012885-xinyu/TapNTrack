@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Points History</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/history_style"></div>
+	<div class="container">
+		<div class="tnt">
+			<div style="padding-top: 15px;">
+				<i> Points History <img src="/images/history.png" class="tnt-icon"></i>
+			</div>
+
+			<!-- Display User's Points -->
+			<div class="points">
+				<span id="memberPoints" th:text="${memberPoints}"></span>
+				<a href="/history">
+					<img class="icon" src="/images/point.png" />
+				</a>
+			</div>
+
+
+			<!-- Points History -->
+			<div id="overflow">
+				<div class="other">
+					<div class="earn" th:each="pointsRewarded : ${listPointsRewarded}">
+						<div>
+							<h5 style="color: #06B48B">
+								+<span th:text="${pointsRewarded.pointsRewardedForm}"></span> <img
+									src="/images/point.png" style="width: 30px; height: 30px;">
+							</h5>
+							<p>
+								Points Earned at <span th:text="${pointsRewarded.boothForm}"></span>
+								Booth for <span th:text="${pointsRewarded.activityForm}"></span>
+								Activity
+							</p>
+						</div>
+					</div>
+					<div th:if="${listPointsRewarded == null || listPointsRewarded.isEmpty()}">
+						<p>No points history available.</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+
+	function updatePoints() {
+		const memberId = document.getElementById("memberId").value;
+		fetch(`/api/member/points?memberId=${memberId}`)
+			.then(response => response.json())
+			.then(data => {
+				// Update total points
+				document.getElementById("memberPoints").textContent = data.totalPoints;
+
+				// Update history dynamically
+				const container = document.querySelector("#overflow .other");
+				container.innerHTML = ""; // Clear existing history
+				data.history.forEach(item => {
+					const div = document.createElement("div");
+					div.classList.add("earn");
+					div.innerHTML = `
+                    <div>
+                        <h5 style="color: #06B48B">
+                            +${item.pointsRewardedForm} <img src="/images/point.png" style="width: 30px; height: 30px;">
+                        </h5>
+                        <p>
+                            Points Earned at ${item.boothForm} Booth for ${item.activityForm} Activity
+                        </p>
+                    </div>`;
+					container.appendChild(div);
+				});
+			})
+			.catch(error => console.error('Error fetching points:', error));
+	}
+
+	// Initial call to fetch points and history
+	updatePoints();
+
+	// Refresh points and history every 30 seconds
+	setInterval(updatePoints, 30000);
+
+</script>
+<script>
+	function updatePoints() {
+		fetch('/api/member/points')
+			.then(response => response.json())
+			.then(data => {
+				// Update all points containers dynamically
+				document.querySelectorAll('.points-container span, #memberPoints').forEach(el => {
+					el.textContent = `My Point(s): ${data.totalPoints}`;
+				});
+			})
+			.catch(error => console.error('Error fetching points:', error));
+	}
+
+	// Call `updatePoints` initially and set periodic updates every 30 seconds
+	document.addEventListener('DOMContentLoaded', updatePoints);
+	setInterval(updatePoints, 30000);
+
+</script>
+
+
+</html>

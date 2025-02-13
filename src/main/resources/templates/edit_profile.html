@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Edit Profile Details</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div class="container">
+		<div class="tnt">
+			<i>Edit Your Profile <img src="/images/profile.png" class="tnt-icon"></i>
+			<div id="overflow">
+				<form th:action="@{/profile/edit}" th:object="${member}" method="post">
+					<div>
+						<label for="avatar" class="label-tnt">Avatar:</label> <select id="select" class="input-tnt"
+							th:field="*{avatar}" required>
+							<option value="">Select your avatar:</option>
+							<option th:each="avatar : ${avatarList}" th:value="${avatar.id}" th:text="${avatar.name}">
+							</option>
+							<option value="/avatar/cat.jpg">Cat</option>
+							<option value="/avatar/dog.jpg">Dog</option>
+							<option value="/avatar/duck.jpg">Duck</option>
+							<option value="/avatar/rat.jpg">Hamster</option>
+							<option value="/avatar/penguin.jpg">Penguin</option>
+							<option value="/avatar/rabbit.jpg">Rabbit</option>							
+						</select>
+
+						<div class="display">
+							<p>Your Selected Avatar</p>
+							<img id="avatar" src="/avatar/white.png" class="avatar" />
+						</div>
+					</div>
+					<div>
+						<label for="username" class="label-tnt">Username:</label> <input type="text" id="username"
+							class="input-tnt" th:field="*{username}" />
+					</div>
+					<div>
+						<label for="email" class="label-tnt">Email:</label> <input type="text" id="email"
+							class="input-tnt" th:field="*{email}" />
+					</div>
+					<button type="submit" class="btn">Save Changes</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		const imageSelect = document.getElementById('select');
+		const displayAvatar = document.getElementById('avatar');
+
+		imageSelect.addEventListener('change', function () {
+			const selectedAvatar = imageSelect.value;
+
+			// If no avatar is selected, default to /avatar/white.png
+			displayAvatar.src = selectedAvatar || "/avatar/white.png";
+		});
+		function myFunction() {
+			var x = document.getElementById("password");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+
+		// After editing the profile, reload the page to update the leaderboard
+		document.querySelector('form').addEventListener('submit', function (e) {
+			setTimeout(() => {
+				window.location.href = '/'; // Redirect to the index page to refresh the leaderboard
+			}, 2000);
+		});
+
+	</script>
+</body>
+
+</html>

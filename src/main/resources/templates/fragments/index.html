@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Home</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/index_style"></div>
+	<div class="container">
+		<div class="fixed-container">
+			<!-- Tap N Track Logo -->
+			<a href="/" style="text-decoration: none;">
+				<img class="logo" th:src="@{/images/logo.png}" alt="Logo">
+			</a>
+			<!-- Add Member Button (Visible only to admins) -->
+			<a href="/members/add" class="visitor" sec:authorize="hasRole('ROLE_ADMIN')"> Add Member </a>
+		</div>
+		<div class="tnt">
+			<i> Leaderboard <img src="/images/leaderboard.png" class="tnt-icon"></i>
+			<!-- Leaderboard Entries -->
+			<div id="overflow">
+				<div class="tnt-row">
+					<div th:each="member, iterStat : ${topMembers}" th:if="${iterStat.index < 3}">
+						<div th:class="${iterStat.index == 0 ? 'first' : (iterStat.index == 1 ? 'second' : 'third')}">
+							<img th:if="${iterStat.index == 0}" th:src="@{/images/first.png}" class="rank">
+							<img th:if="${iterStat.index == 1}" th:src="@{/images/second.png}" class="rank">
+							<img th:if="${iterStat.index == 2}" th:src="@{/images/third.png}" class="rank">
+							<img th:src="${member.avatar}" alt="Avatar" class="pfp" />
+							<div>
+								<p th:text="${member.username}">Username</p>
+								<div class="score">
+									<span th:text="${member.points}">Points</span>
+									<img src="/images/point.png" class="icon">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div th:each="member, iterStat : ${topMembers}" th:if="${iterStat.index >= 3}">
+						<div class="other">
+							<span class="placing" th:text="${iterStat.index + 1}"></span>
+							<img th:src="${member.avatar}" alt="Avatar" class="pfp">
+							<div class="username">
+								<span th:text="${member.username}"></span>
+								<div>
+									<span th:text="${member.points}">Points</span>
+									<img src="/images/point.png" class="icon">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Function to dynamically fetch and update points
+		function updatePoints() {
+			const memberId = document.getElementById("memberId")?.value;
+			if (!memberId) return;
+
+			fetch(`/api/member/points?memberId=${memberId}`)
+				.then(response => response.json())
+				.then(points => {
+					document.querySelectorAll(".score span").forEach(el => {
+						el.textContent = points;
+					});
+				})
+				.catch(error => console.error("Error fetching points:", error));
+		}
+
+		// Periodic update every 30 seconds
+		setInterval(updatePoints, 30000);
+		updatePoints(); // Initial call
+	</script>
+</body>
+
+</html>

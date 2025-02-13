@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>View Single Reward</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="fragments/header"></div>
+
+		<h1 class="mt-4 mb-4">Reward Details</h1>
+		
+		<div class="card mb-4">
+			<div class="card-body">
+				<h5 class="card-title" th:text="${rewards.description}"></h5>
+
+				<img th:src="@{'/uploads/rewards/' + ${rewards.rewardsId} + '/' + ${rewards.imgName}}"
+					alt="Reward Image" class="img-fluid mb-3" style="max-width: 200px;">
+
+				<p class="card-text">
+					<strong>Points Required:</strong> <span th:text="${rewards.pointsRequired}"></span> points<br>
+					<strong>Quantity Available:</strong> <span th:text="${rewards.quantity}"></span>
+				</p>
+
+				<a th:href="@{/rewards}" class="btn btn-secondary mt-3">Back to Rewards</a>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

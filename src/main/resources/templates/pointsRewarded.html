@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Points Rewarded</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<style>
+/* Styles for the popup */
+.popup {
+	display: none;
+	position: fixed;
+	background-color: #e0f7ea;
+	border: 1px solid #4caf50;
+	padding: 20px;
+	border-radius: 5px;
+	text-align: center;
+	z-index: 1000;
+}
+
+.popup.active {
+	display: block;
+}
+</style>
+</head>
+
+<body>
+	<div th:replace="fragments/style"></div>
+
+	<div class="container">
+		<div class="tnt">
+			<i style="margin-top: 35px;"> Points Rewarded <img
+				src="/images/point.png" class="tnt-icon"></i>
+			<form id="addPointsForm" th:action="@{/pointsRewarded/save}"
+				th:object="${pointsRewarded}" method="post">
+				<!-- Hidden input for member ID -->
+				<input type="hidden" id="memberId" th:field="*{member.id}" />
+
+				<!-- Display member details -->
+				<p>
+					Member: <span
+						th:text="${pointsRewarded.member != null ? pointsRewarded.member.username : 'N/A'}"></span>
+				</p>
+
+				<!-- Activity selection -->
+				<label class="label-tnt">Activity</label> <select
+					id="activityDropdown" th:field="*{activityForm}" class="input-tnt" required>
+					<option value="" disabled selected>Select activity</option>
+					<option th:each="activity : ${activitiesList}"
+						th:value="${activity.id}"
+						th:data-points="${activity.pointsRewarded}"
+						th:data-booths="${activity.booth}" th:text="${activity.activity}"></option>
+				</select>
+
+				<!-- Booth selection -->
+				<label class="label-tnt">Booth</label> <select id="boothDropdown"
+					th:field="*{boothForm}" class="input-tnt" required>
+					<option value="" disabled selected>Select booth</option>
+				</select>
+
+				<!-- Points selection -->
+				<label class="label-tnt">Points</label> <select id="pointsDropdown"
+					th:field="*{pointsRewardedForm}" class="input-tnt" required>
+					<option value="" disabled selected>Select points</option>
+				</select>
+
+				<!-- Submit button -->
+				<button type="submit" class="btn">Reward Points</button>
+			</form>
+
+			<div class="popup" id="popup">
+				<p>Points Rewarded Successfully!</p>
+				<p>Redirecting to the index page...</p>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const activityDropdown = document.getElementById('activityDropdown');
+			const boothDropdown = document.getElementById('boothDropdown');
+			const pointsDropdown = document.getElementById('pointsDropdown');
+			const form = document.getElementById('addPointsForm');
+			const popup = document.getElementById('popup');
+
+			if (activityDropdown.options.length === 2) {
+				// If only one activity is available (one option + placeholder)
+				activityDropdown.selectedIndex = 0; // Select the first activity
+				populateBoothAndPoints(activityDropdown.options[1]); // Populate based on the only activity
+			}
+
+			// Handle dropdown selection for booth and points
+			activityDropdown.addEventListener('change', function () {
+				const selectedOption = this.options[this.selectedIndex];
+				const points = selectedOption.getAttribute('data-points');
+				const booths = selectedOption.getAttribute('data-booths');
+
+				// Prevent duplicate points selection
+				pointsDropdown.innerHTML = '<option value="" disabled selected>Select points</option>';
+				if (points) {
+					const option = document.createElement('option');
+					option.value = points;
+					option.textContent = points;
+					pointsDropdown.appendChild(option);
+				}
+
+				// Prevent duplicate booth selection
+				boothDropdown.innerHTML = '<option value="" disabled selected>Select booth</option>';
+				if (booths) {
+					const boothList = booths.split(',');
+					boothList.forEach(booth => {
+						const option = document.createElement('option');
+						option.value = booth;
+						option.textContent = booth;
+						boothDropdown.appendChild(option);
+					});
+
+            // Optionally pre-select the first booth and points
+            if (boothDropdown.options.length > 1) {
+						boothDropdown.selectedIndex = 1;
+					}
+					if (pointsDropdown.options.length > 1) {
+						pointsDropdown.selectedIndex = 1;
+					}
+				}
+
+			// Optional: Automatically trigger change event if there's only one activity on page load
+			if (activityDropdown.options.length === 2) {
+				activityDropdown.selectedIndex = 1;
+				activityDropdown.dispatchEvent(new Event('change'));
+			}
+		});
+
+		// Update points dynamically
+		function updatePoints() {
+			fetch('/api/member/points')
+				.then(response => response.json())
+				.then(points => {
+					document.querySelectorAll('.points-container span, #points-display').forEach(el => {
+						el.textContent = points;
+					});
+				})
+				.catch(error => console.error('Error fetching points:', error));
+		}
+		});
+	</script>
+
+	<!-- Popup Handling -->
+	<script>
+		const form = document.getElementById('addPointsForm');
+		const popup = document.getElementById('popup');
+
+		form.addEventListener('submit', function (event) {
+			// Prevent the default form submission
+			event.preventDefault();
+
+			// Show the popup
+			popup.classList.add('active');
+
+			// Wait for 2 seconds, then submit the form and redirect
+			setTimeout(() => {
+				form.submit();
+			}, 2000);
+		});
+	</script>
+</body>
+
+</html>
