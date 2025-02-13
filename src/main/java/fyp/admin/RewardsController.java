@@ -220,6 +220,11 @@ public class RewardsController {
 			return "redirect:/rewards";
 		}
 
+		if (member.getPoints() == 0) {
+			model.addAttribute("error", "You have 0 points. Earn more points before redeeming a reward.");
+			return "redirect:/rewards";
+		}
+
 		if (member.getPoints() >= rewards.getPointsRequired() && rewards.getQuantity() > 0) {
 			member.setPoints(member.getPoints() - rewards.getPointsRequired());
 			rewards.setQuantity(rewards.getQuantity() - 1);
@@ -241,5 +246,4 @@ public class RewardsController {
 			return "redirect:/rewards";
 		}
 	}
-
 }
