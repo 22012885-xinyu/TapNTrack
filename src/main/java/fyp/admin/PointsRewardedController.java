@@ -85,7 +85,8 @@ public class PointsRewardedController {
 			redirectAttributes.addFlashAttribute("errorMessage", "Invalid member details. Please try again.");
 		}
 
-		return "redirect:/"; 
+		// Redirect back to the index page
+		return "redirect:/"; // Redirect to index.html
 	}
 
 	@GetMapping("/history")
@@ -106,7 +107,7 @@ public class PointsRewardedController {
 		Integer totalPoints = pointsRewardedService.calculateTotalPoints(member);
 		model.addAttribute("memberPoints", totalPoints != null ? totalPoints : 0);
 
-		return "history"; 
+		return "history"; // Return the correct template
 	}
 
 }

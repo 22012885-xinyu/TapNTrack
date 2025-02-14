@@ -47,22 +47,25 @@
 			</div>
 
 			<!-- Display Redeemed Rewards -->
-			<div
-				th:if="${redeemedRewards != null and !redeemedRewards.isEmpty()}">
-				<div class="row">
-					<div th:each="reward : ${redeemedRewards}" class="col-md-4 mb-4">
-						<div class="card">
-							<img
-								th:src="@{'/uploads/rewards/' + ${reward.rewards.rewardsId} + '/' + ${reward.rewards.imgName}}"
-								alt="Reward Image" class="card-img-top reward-image">
+			<div id="overflow">
+				<div
+					th:if="${redeemedRewards != null and !redeemedRewards.isEmpty()}">
+					<div class="tnt-row">
+						<div th:each="reward : ${redeemedRewards}">
+							<div class="reward">
+								<img
+									th:src="@{'/uploads/rewards/' + ${reward.rewards.rewardsId} + '/' + ${reward.rewards.imgName}}"
+									alt="Reward Image" class="card-img">
 
-							<div class="card-body">
-								<h5 class="card-title" th:text="${reward.rewards.description}"></h5>
-								<p class="card-text">
-									<strong>Amount of Points Used:</strong> <span
-										th:text="${reward.memberPoints}"></span> points<br> <strong>Redeemed
-										On:</strong> <span th:text="${reward.redeemedDate}"></span>
-								</p>
+								<div class="card-body">
+									<h5 class="card-title" th:text="${reward.rewards.description}"></h5>
+									<p class="card-text">
+										<b>Points Deducted: -<span th:text="${reward.memberPoints}"></span>
+											<img src="/images/point.png" class="icon">
+										</b><p>Redeemed On:</br><span
+											th:text="${reward.redeemedDate}"></span></p> 
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>

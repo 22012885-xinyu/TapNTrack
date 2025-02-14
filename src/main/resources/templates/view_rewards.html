@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rewards</title>
-<link rel="icon" type="image/png" href="/images/nfc.png">
-<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-<script src="/bootstrap/js/bootstrap.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Rewards</title>
+	<link rel="icon" type="image/png" href="/images/nfc.png">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<script src="/bootstrap/js/bootstrap.js"></script>
 </head>
 
 <body>
@@ -16,17 +16,15 @@
 		<div class="tnt">
 			<div class="label-container">
 				<div class="label" style="border-bottom: 2px solid #06B48B;">
-					<a href="/rewards" class="link"> <img
-						style="margin-left: 15px; width: 40px; height: 40px;"
-						src="images/gift.png">
+					<a href="/rewards" class="link"> <img style="margin-left: 15px; width: 40px; height: 40px;"
+							src="images/gift.png">
 						<p>Rewards</p>
 					</a>
 				</div>
 
 				<div class="label" sec:authorize="hasRole('ROLE_USER')">
-					<a href="/redeem" class="link"> <img
-						style="margin-left: 15px; width: 60px; height: 40px;"
-						src="images/redeem.png">
+					<a href="/redeem" class="link"> <img style="margin-left: 15px; width: 60px; height: 40px;"
+							src="images/redeem.png">
 						<p>Redeemed</p>
 					</a>
 				</div>
@@ -40,8 +38,7 @@
 
 			<!-- Filter Section -->
 			<div class="filter">
-				<select name="rewards" id="rewards" class="form-select"
-					onchange="filterRewards(this.value)">
+				<select name="rewards" id="rewards" class="form-select" onchange="filterRewards(this.value)">
 					<option value="">Filter By</option>
 					<option value="asc">Lowest to Highest</option>
 					<option value="desc">Highest to Lowest</option>
@@ -51,15 +48,13 @@
 			<div id="overflow">
 				<div class="tnt-row">
 					<div class="reward" th:each="reward : ${listRewards}">
-						<img
-							th:src="@{'/uploads/rewards/' + ${reward.rewardsId} + '/' + ${reward.imgName}}"
+						<img th:src="@{'/uploads/rewards/' + ${reward.rewardsId} + '/' + ${reward.imgName}}"
 							class="card-img">
 						<div>
 							<p>
-								<a
-									th:href="@{/rewards/view/{rewardsId}(rewardsId=${reward.rewardsId})}"
-									th:text="${reward.description}"
-									class="text-decoration-none text-dark"> </a>
+								<a th:href="@{/rewards/view/{rewardsId}(rewardsId=${reward.rewardsId})}"
+									th:text="${reward.description}" class="text-decoration-none text-dark">
+								</a>
 							</p>
 							<p>
 								Points Required: <span th:text="${reward.pointsRequired}"></span>
@@ -72,23 +67,20 @@
 								Status: <span th:text="${reward.status}"></span>
 							</p>
 							<div sec:authorize="hasRole('ROLE_USER')">
-								<a
-									th:if="${reward.quantity > 0 && reward.status == 'Available'}"
+								<a th:if="${reward.quantity > 0 && reward.status == 'Available'}"
 									th:href="@{/redeem/process/{rewardsId}(rewardsId=${reward.rewardsId})}"
-									th:onclick="'return checkPoints(' + ${userPoints} + ', ' + ${reward.pointsRequired} + ');'"
+									th:onclick="'return checkPoints(' + ${userPoints} + ');'"
 									class="btn-rewards">Redeem</a>
 
-								<button
-									th:if="${reward.quantity == 0 || reward.status != 'Available'}"
+								<button th:if="${reward.quantity == 0 || reward.status != 'Available'}"
 									onclick="alertUnavailable()" class="btn-rewards btn-disabled">Redeem</button>
 							</div>
 
 							<div class="end">
 								<div sec:authorize="hasRole('ROLE_ADMIN')" class="end">
-									<a
-										th:href="@{/rewards/edit/{rewardsId}(rewardsId=${reward.rewardsId})}"
-										class="link">Edit |</a> <a
-										th:href="@{/rewards/delete/{rewardsId}(rewardsId=${reward.rewardsId})}"
+									<a th:href="@{/rewards/edit/{rewardsId}(rewardsId=${reward.rewardsId})}"
+										class="link">Edit |</a>
+									<a th:href="@{/rewards/delete/{rewardsId}(rewardsId=${reward.rewardsId})}"
 										class="link">Delete</a>
 								</div>
 							</div>
@@ -111,8 +103,8 @@
 		function alertUnavailable() {
 			alert('This reward is unavailable or out of stock. Please try again later.');
 		}
-		function checkPoints(memberPoints, pointsRequired) {
-			if (memberPoints < pointsRequired) {
+		function checkPoints(memberPoints) {
+			if (memberPoints == 0) {
 				alert("You have insufficient points to redeem this reward.");
 				return false;
 			}
