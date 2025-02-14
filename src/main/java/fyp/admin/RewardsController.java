@@ -89,6 +89,12 @@ public class RewardsController {
 		return "edit_rewards";
 	}
 
+	@GetMapping("/rewards/delete/{rewardsId}")
+	public String deleteReward(@PathVariable("rewardsId") Integer rewardsId) {
+		rewardsRepository.deleteById(rewardsId);
+		return "redirect:/rewards";
+	}
+
 	@GetMapping("/rewards/view/{rewardsId}")
 	public String viewSingleReward(@PathVariable("rewardsId") Integer rewardsId, Model model) {
 		Rewards rewards = rewardsRepository.findById(rewardsId)
