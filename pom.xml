@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fyp.admin</groupId>
-	<artifactId>tapntrack_-2</artifactId>
+	<artifactId>tapntrack_</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tapntrack_</name>
 	<description>FYP</description>
